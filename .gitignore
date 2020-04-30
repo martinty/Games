@@ -1,0 +1,9 @@
+.vscode
+Makefile
+debug
+release
+CMakeLists.txt
+cmake
+build
+Debug
+Release
