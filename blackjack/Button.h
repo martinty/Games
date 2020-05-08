@@ -3,11 +3,8 @@
 #include <FL/Fl_Widget.H>
 #include <FL/fl_draw.H>
 
-#include <string>
-
 class Button : public Fl_Widget {
    private:
-    std::string name;
     bool clicked = false;
     void draw() override {
         if (clicked) {
@@ -20,10 +17,9 @@ class Button : public Fl_Widget {
     }
 
    public:
-    Button(int x, int y, int w, int h, const std::string& str)
-        : Fl_Widget{x, y, w, h}, name{str} {
-        label(name.c_str());
-    }
+    Button(int x, int y, int w, int h, const char* label)
+        : Fl_Widget{x, y, w, h, label} {}
+    Button() = delete;
     ~Button() = default;
     bool click() {
         if (!visible()) return false;
