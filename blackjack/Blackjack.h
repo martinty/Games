@@ -34,10 +34,10 @@ class Blackjack : public Fl_Widget {
     void updateGameInfo();
     void updateCashInfo();
     void newDeck();
-    void showPlayerBtn();
-    void hidePlayerBtn();
-    void showBet();
-    void hideBet();
+    void showPlayerBtns();
+    void hidePlayerBtns();
+    void showBetBtns();
+    void hideBetBtns();
     void playGame();
     void draw() override;
 

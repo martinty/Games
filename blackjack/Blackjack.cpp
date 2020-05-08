@@ -54,7 +54,7 @@ Blackjack::Blackjack() : Fl_Widget{0, 0, screenWidth, screenHeight} {
     yesBtn->hide();
     noBtn->hide();
     updateCashInfo();
-    hidePlayerBtn();
+    hidePlayerBtns();
 }
 
 void Blackjack::init() {
@@ -92,7 +92,7 @@ void Blackjack::init() {
 
 void Blackjack::startRound() {
     betInput->cut(0, betInput->maximum_size());
-    hideBet();
+    hideBetBtns();
     updateCashInfo();
     rounds++;
     if (deck.size() < 20) newDeck();
@@ -101,7 +101,7 @@ void Blackjack::startRound() {
         dealer.newCard(deck.drawCard());
     }
     dealer.setCardState(1, CardState::back);
-    showPlayerBtn();
+    showPlayerBtns();
     stage = Stage::player;
 }
 
@@ -139,7 +139,7 @@ void Blackjack::dealerTurn() {
 
 void Blackjack::showdown() {
     if (!gameInfo->visible()) {
-        hidePlayerBtn();
+        hidePlayerBtns();
         updateGameInfo();
         updateCashInfo();
         gameInfo->show();
@@ -154,7 +154,7 @@ void Blackjack::showdown() {
         gameInfo->hide();
         yesBtn->hide();
         noBtn->hide();
-        showBet();
+        showBetBtns();
         bet = 0;
         updateCashInfo();
         if (playerCash <= 0) {
@@ -235,26 +235,26 @@ void Blackjack::newDeck() {
     deck.shuffle();
 }
 
-void Blackjack::showPlayerBtn() {
+void Blackjack::showPlayerBtns() {
     for (auto& b : actionBtns) {
         b->show();
     }
 }
 
-void Blackjack::hidePlayerBtn() {
+void Blackjack::hidePlayerBtns() {
     for (auto& b : actionBtns) {
         b->hide();
     }
 }
 
-void Blackjack::showBet() {
+void Blackjack::showBetBtns() {
     betInput->show();
     for (auto& b : betBtns) {
         b->show();
     }
 }
 
-void Blackjack::hideBet() {
+void Blackjack::hideBetBtns() {
     betInput->hide();
     for (auto& b : betBtns) {
         b->hide();
