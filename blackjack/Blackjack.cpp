@@ -8,6 +8,40 @@
 #include <sstream>
 
 Blackjack::Blackjack() : Fl_Widget{0, 0, screenWidth, screenHeight} {
+    gameInfo =
+        make_unique<Fl_Text_Display>(40, (int)(cardHeight * 4.5), 250, 100);
+    cashInfo = make_unique<Fl_Text_Display>(w() - 290, (int)(cardHeight * 4.5),
+                                            250, 100);
+
+    yesBtn = make_unique<Button>(screenWidth / 2 - 80, cardHeight * 5, 40, 20,
+                                 "Yes");
+    noBtn =
+        make_unique<Button>(screenWidth / 2 + 40, cardHeight * 5, 40, 20, "No");
+
+    actionBtns.push_back(move(make_unique<Button>(
+        w() / 2 - 170, (int)(cardHeight * 4.5), 100, 20, "Hit")));
+    actionBtns.push_back(move(make_unique<Button>(
+        w() / 2 - 50, (int)(cardHeight * 4.5), 100, 20, "Stand")));
+    actionBtns.push_back(move(make_unique<Button>(
+        w() / 2 + 70, (int)(cardHeight * 4.5), 100, 20, "Double down")));
+
+    betInput =
+        make_unique<Fl_Int_Input>(w() / 2 - 30, cardHeight * 3, 60, 20, "Bet");
+    betBtns.push_back(move(
+        make_unique<Button>(w() / 2 - 100, cardHeight * 3 + 40, 40, 20, "50")));
+    betBtns.push_back(move(
+        make_unique<Button>(w() / 2 - 20, cardHeight * 3 + 40, 40, 20, "100")));
+    betBtns.push_back(move(
+        make_unique<Button>(w() / 2 + 60, cardHeight * 3 + 40, 40, 20, "200")));
+    betBtns.push_back(move(make_unique<Button>(
+        w() / 2 - 100, cardHeight * 3 + 80, 40, 20, "500")));
+    betBtns.push_back(move(make_unique<Button>(
+        w() / 2 - 20, cardHeight * 3 + 80, 40, 20, "1000")));
+    betBtns.push_back(move(make_unique<Button>(
+        w() / 2 + 60, cardHeight * 3 + 80, 40, 20, "All in")));
+
+    clock = make_unique<Fl_Round_Clock>(screenWidth - 100, 20, 80, 80);
+
     deck.shuffle();
     gameInfo->color(FL_GRAY, FL_GRAY);
     gameInfo->buffer(gameTextBuff);
@@ -16,30 +50,50 @@ Blackjack::Blackjack() : Fl_Widget{0, 0, screenWidth, screenHeight} {
     cashInfo->color(FL_GRAY, FL_GRAY);
     cashInfo->buffer(cashTextBuff);
     cashInfo->label("Blackjack cash info");
-    updateCashInfo();
-    cashInput->maximum_size(4);
-    hidePlayerBtn();
+    betInput->maximum_size(4);
     yesBtn->hide();
     noBtn->hide();
+    updateCashInfo();
+    hidePlayerBtn();
 }
 
 void Blackjack::init() {
-    if (Fl::event_key(FL_Enter) && cashInput->position()) {
-        stringstream ss{cashInput->value()};
+    if (Fl::event_key(FL_Enter) && betInput->position()) {
+        stringstream ss{betInput->value()};
         int number;
         ss >> number;
-        cashInput->cut(0, cashInput->maximum_size());
         if (number > 0 && number <= playerCash) {
             bet = number;
             playerCash -= bet;
-            cashInput->hide();
-            updateCashInfo();
             startRound();
+        }
+    } else {
+        for (auto& b : betBtns) {
+            if (b->click()) {
+                string name = b->label();
+                if (name == "All in") {
+                    bet = playerCash;
+                    playerCash -= bet;
+                    startRound();
+                    return;
+                } else {
+                    int number = std::stoi(name);
+                    if (number <= playerCash) {
+                        bet = number;
+                        playerCash -= bet;
+                        startRound();
+                        return;
+                    }
+                }
+            }
         }
     }
 }
 
 void Blackjack::startRound() {
+    betInput->cut(0, betInput->maximum_size());
+    hideBet();
+    updateCashInfo();
     rounds++;
     if (deck.size() < 20) newDeck();
     for (int i{0}; i < 2; i++) {
@@ -54,16 +108,16 @@ void Blackjack::startRound() {
 void Blackjack::playerTurn() {
     if (player.getBlackjack()) {
         stage = Stage::dealer;
-    } else if (hitBtn->click()) {
+    } else if (actionBtns[0]->click()) {
         player.newCard(deck.drawCard());
         if (player.getValue() == 21) {
             stage = Stage::dealer;
         } else if (player.getBusted()) {
             stage = Stage::showdown;
         }
-    } else if (standBtn->click()) {
+    } else if (actionBtns[1]->click()) {
         stage = Stage::dealer;
-    } else if (doubleDownBtn->click() && bet <= playerCash) {
+    } else if (actionBtns[2]->click() && bet <= playerCash) {
         playerCash -= bet;
         bet += bet;
         player.newCard(deck.drawCard());
@@ -100,17 +154,17 @@ void Blackjack::showdown() {
         gameInfo->hide();
         yesBtn->hide();
         noBtn->hide();
-        cashInput->show();
+        showBet();
         bet = 0;
         updateCashInfo();
         if (playerCash <= 0) {
             fl_message("You're out of cash... The game will now exit.");
-            exit(0);
+            std::exit(0);
         }
         stage = Stage::init;
     } else if (noBtn->click()) {
         fl_message("Thanks for playing Blackjack! The game will now exit.");
-        exit(0);
+        std::exit(0);
     }
 }
 
@@ -182,15 +236,29 @@ void Blackjack::newDeck() {
 }
 
 void Blackjack::showPlayerBtn() {
-    hitBtn->show();
-    standBtn->show();
-    doubleDownBtn->show();
+    for (auto& b : actionBtns) {
+        b->show();
+    }
 }
 
 void Blackjack::hidePlayerBtn() {
-    hitBtn->hide();
-    standBtn->hide();
-    doubleDownBtn->hide();
+    for (auto& b : actionBtns) {
+        b->hide();
+    }
+}
+
+void Blackjack::showBet() {
+    betInput->show();
+    for (auto& b : betBtns) {
+        b->show();
+    }
+}
+
+void Blackjack::hideBet() {
+    betInput->hide();
+    for (auto& b : betBtns) {
+        b->hide();
+    }
 }
 
 void Blackjack::playGame() {
