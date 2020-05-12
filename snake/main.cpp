@@ -5,6 +5,7 @@
 #include <memory>
 #include <thread>
 
+#include "SnakeAI.h"
 #include "Track.h"
 #include "utilities.h"
 
@@ -13,9 +14,10 @@ int main() {
 
     auto win =
         std::make_unique<Fl_Double_Window>(screenWidth, screenHeight, "Snake");
-    win->color(FL_GRAY);
+    win->color(FL_BLACK);
 
-    Track* track = new Track();
+    // Track* track = new Track();
+    auto ai = std::make_unique<SnakeAI>();
 
     win->end();
     win->show();
