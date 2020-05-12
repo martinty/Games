@@ -147,6 +147,10 @@ void Blackjack::showdown() {
     }
     fl_draw("New round?", w() / 2 - 30, cardHeight * 5 - 20);
     if (yesBtn->click()) {
+        if (playerCash <= 0) {
+            fl_message("You're out of cash... The game will now exit.");
+            std::exit(0);
+        }
         dealer.reset();
         player.reset();
         gameInfo->hide();
@@ -155,10 +159,6 @@ void Blackjack::showdown() {
         showBetBtns();
         bet = 0;
         updateCashInfo();
-        if (playerCash <= 0) {
-            fl_message("You're out of cash... The game will now exit.");
-            std::exit(0);
-        }
         stage = Stage::init;
     } else if (noBtn->click()) {
         fl_message("Thanks for playing Blackjack! The game will now exit.");
