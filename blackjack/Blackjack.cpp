@@ -12,19 +12,18 @@ Blackjack::Blackjack() : Fl_Widget{0, 0, screenWidth, screenHeight} {
         make_unique<Fl_Text_Display>(40, (int)(cardHeight * 4.5), 250, 100);
     cashInfo = make_unique<Fl_Text_Display>(w() - 290, (int)(cardHeight * 4.5),
                                             250, 100);
-
+    gameTextBuff = new Fl_Text_Buffer();
+    cashTextBuff = new Fl_Text_Buffer();
     yesBtn = make_unique<Button>(screenWidth / 2 - 80, cardHeight * 5, 40, 20,
                                  "Yes");
     noBtn =
         make_unique<Button>(screenWidth / 2 + 40, cardHeight * 5, 40, 20, "No");
-
     actionBtns.push_back(move(make_unique<Button>(
         w() / 2 - 170, (int)(cardHeight * 4.5), 100, 20, "Hit")));
     actionBtns.push_back(move(make_unique<Button>(
         w() / 2 - 50, (int)(cardHeight * 4.5), 100, 20, "Stand")));
     actionBtns.push_back(move(make_unique<Button>(
         w() / 2 + 70, (int)(cardHeight * 4.5), 100, 20, "Double down")));
-
     betInput =
         make_unique<Fl_Int_Input>(w() / 2 - 30, cardHeight * 3, 60, 20, "Bet");
     betBtns.push_back(move(
@@ -39,7 +38,6 @@ Blackjack::Blackjack() : Fl_Widget{0, 0, screenWidth, screenHeight} {
         w() / 2 - 20, cardHeight * 3 + 80, 40, 20, "1000")));
     betBtns.push_back(move(make_unique<Button>(
         w() / 2 + 60, cardHeight * 3 + 80, 40, 20, "All in")));
-
     clock = make_unique<Fl_Round_Clock>(screenWidth - 100, 20, 80, 80);
 
     deck.shuffle();

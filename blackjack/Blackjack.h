@@ -43,8 +43,8 @@ class Blackjack : public Fl_Widget {
 
     unique_ptr<Fl_Text_Display> gameInfo;
     unique_ptr<Fl_Text_Display> cashInfo;
-    Fl_Text_Buffer *gameTextBuff = new Fl_Text_Buffer();
-    Fl_Text_Buffer *cashTextBuff = new Fl_Text_Buffer();
+    Fl_Text_Buffer *gameTextBuff;
+    Fl_Text_Buffer *cashTextBuff;
     unique_ptr<Button> yesBtn;
     unique_ptr<Button> noBtn;
     vector<unique_ptr<Button>> actionBtns;
