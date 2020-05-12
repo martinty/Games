@@ -20,8 +20,8 @@ void CardDeck::swap(int a, int b) {
     cards[b] = move(temp);
 }
 
-void CardDeck::shuffle() {
-    for (int n = 0; n < 3; n++) {
+void CardDeck::shuffle(int N) {
+    for (int n = 0; n < N; n++) {
         for (int i = 0; i < size(); i++) {
             swap(i, rand() % size());
         }

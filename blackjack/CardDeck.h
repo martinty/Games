@@ -13,7 +13,7 @@ class CardDeck {
    public:
     CardDeck();
     ~CardDeck();
-    void shuffle();
+    void shuffle(int N = 3);
     void reset();
     Card* drawCard(CardSide side = CardSide::front);
     bool empty() const;
