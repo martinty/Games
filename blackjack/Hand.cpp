@@ -4,15 +4,15 @@ void Hand::newCard(Card* card) {
     cards.push_back(card);
 
     int space = card->w() * 2;
-    bool even = !(getSize() % 2);
+    bool even = !(size() % 2);
     int offset;
     if (even) {
-        offset = (getSize() / 2 - 1) * space + card->w();
+        offset = (size() / 2 - 1) * space + card->w();
     } else {
-        offset = (getSize() / 2) * space;
+        offset = (size() / 2) * space;
     }
     int startX = screenWidth / 2 - card->w() / 2 - offset;
-    for (int i{0}; i < getSize(); i++) {
+    for (int i{0}; i < size(); i++) {
         cards[i]->position(startX + space * i, y);
     }
 
@@ -34,7 +34,7 @@ void Hand::newCard(Card* card) {
             }
         }
     }
-    if (value == 21 && getSize() == 2) blackjack = true;
+    if (value == 21 && size() == 2) blackjack = true;
 }
 
 void Hand::reset() {

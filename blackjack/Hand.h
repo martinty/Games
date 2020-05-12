@@ -20,7 +20,7 @@ class Hand {
     bool getBusted() const { return busted; }
     bool getBlackjack() const { return blackjack; }
     bool getSoft() const { return soft; }
-    int getSize() const { return (int)cards.size(); }
+    int size() const { return (int)cards.size(); }
     void newCard(Card* card);
     void reset();
     void setCardSide(int i, CardSide side);
