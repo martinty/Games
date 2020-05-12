@@ -170,7 +170,16 @@ void Blackjack::showdown() {
 
 void Blackjack::updateGameInfo() {
     string info;
-    if (player.getBlackjack()) {
+    if (player.getBusted()) {
+        info = "Dealer won, player got busted!\n\n";
+        dealerPoints += 1;
+        dealerCash += bet;
+    } else if (dealer.getBusted()) {
+        info = "Player won, dealer got busted!\n\n";
+        playerPoints += 1;
+        playerCash += bet * 2;
+        dealerCash -= bet;
+    } else if (player.getBlackjack()) {
         if (dealer.getBlackjack()) {
             info = "Both got Blackjack, it's a push!\n\n";
             playerPoints += 0.5;
@@ -186,15 +195,6 @@ void Blackjack::updateGameInfo() {
         info = "Dealer won with Blackjack!\n\n";
         dealerPoints += 1;
         dealerCash += bet;
-    } else if (player.getBusted()) {
-        info = "Dealer won, player got busted!\n\n";
-        dealerPoints += 1;
-        dealerCash += bet;
-    } else if (dealer.getBusted()) {
-        info = "Player won, dealer got busted!\n\n";
-        playerPoints += 1;
-        playerCash += bet * 2;
-        dealerCash -= bet;
     } else if (player.getValue() < dealer.getValue()) {
         info =
             "Dealer won with value " + to_string(dealer.getValue()) + "!\n\n";

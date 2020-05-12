@@ -51,7 +51,7 @@ void Hand::reset() {
 void Hand::setCardSide(int i, CardSide side) {
     if (cards.empty()) {
         cout << "Hand is empty!\n";
-    } else if (i < 0 || i >= (int)cards.size()) {
+    } else if (i < 0 || i >= size()) {
         cout << "Index is out of range!\n";
     } else {
         cards[i]->setCardSide(side);

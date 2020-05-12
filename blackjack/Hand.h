@@ -24,6 +24,5 @@ class Hand {
     void newCard(Card* card);
     void reset();
     void setCardSide(int i, CardSide side);
-
     friend ostream& operator<<(ostream& os, const Hand& rhs);
 };
