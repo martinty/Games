@@ -15,9 +15,8 @@ class CardDeck {
     ~CardDeck();
     void shuffle();
     void reset();
-    Card* drawCard();
+    Card* drawCard(CardSide side = CardSide::front);
     bool empty() const;
     int size() const;
-
     friend ostream& operator<<(ostream& os, const CardDeck& rhs);
 };

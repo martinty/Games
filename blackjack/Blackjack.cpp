@@ -100,7 +100,7 @@ void Blackjack::startRound() {
         player.newCard(deck.drawCard());
         dealer.newCard(deck.drawCard());
     }
-    dealer.setCardState(1, CardState::back);
+    dealer.setCardSide(1, CardSide::back);
     showPlayerBtns();
     stage = Stage::player;
 }
@@ -145,7 +145,7 @@ void Blackjack::showdown() {
         gameInfo->show();
         yesBtn->show();
         noBtn->show();
-        dealer.setCardState(1, CardState::front);
+        dealer.setCardSide(1, CardSide::front);
     }
     fl_draw("New round?", w() / 2 - 30, cardHeight * 5 - 20);
     if (yesBtn->click()) {

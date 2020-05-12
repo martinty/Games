@@ -40,25 +40,24 @@ const map<Rank, string> rankSymbolMap{
     {Rank::jack, "J"},  {Rank::queen, "Q"}, {Rank::king, "K"},
     {Rank::ace, "A"}};
 
-enum class CardState { front, back };
+enum class CardSide { front, back, none };
 
 class Card : public Fl_Widget {
    private:
     Suit s;
     Rank r;
     Fl_PNG_Image* card;
-    Fl_PNG_Image backSide{"cards_png/blue_back.png"};
+    Fl_PNG_Image* backSide;
+    CardSide cardSide;
     void draw() override;
-    CardState state = CardState::back;
-    bool drawable = false;
 
    public:
-    Card(Suit s, Rank r, int x, int y);
+    Card(Suit s, Rank r, int x = 0, int y = 0, CardSide side = CardSide::none);
     Card() = delete;
     ~Card();
     void reset();
-    void setDrawable(bool value);
-    void setState(CardState state);
+    void setCardSide(CardSide side);
+    CardSide getCardSide() const;
     Suit getSuit() const;
     Rank getRank() const;
     int value() const;

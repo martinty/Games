@@ -3,8 +3,7 @@
 CardDeck::CardDeck() {
     for (int suit = 1; suit <= 4; suit++) {
         for (int rank = 2; rank <= 14; rank++) {
-            cards.push_back(new Card{Suit{suit}, Rank{rank}, 0, 0});
-            cards.back()->hide();
+            cards.push_back(new Card{Suit{suit}, Rank{rank}});
         }
     }
 }
@@ -36,9 +35,10 @@ void CardDeck::reset() {
     }
 }
 
-Card* CardDeck::drawCard() {
-    Card* card = cards[index];
-    index++;
+Card* CardDeck::drawCard(CardSide side) {
+    Card* card = cards[index++];
+    card->setCardSide(side);
+    card->show();
     return card;
 }
 

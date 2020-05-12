@@ -23,7 +23,7 @@ class Hand {
     int getSize() const { return (int)cards.size(); }
     void newCard(Card* card);
     void reset();
-    void setCardState(int i, CardState state);
+    void setCardSide(int i, CardSide side);
 
     friend ostream& operator<<(ostream& os, const Hand& rhs);
 };

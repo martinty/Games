@@ -1,9 +1,6 @@
 #include "Hand.h"
 
 void Hand::newCard(Card* card) {
-    card->setDrawable(true);
-    card->setState(CardState::front);
-    card->show();
     cards.push_back(card);
 
     int space = card->w() * 2;
@@ -51,13 +48,13 @@ void Hand::reset() {
     soft = false;
 }
 
-void Hand::setCardState(int i, CardState state) {
+void Hand::setCardSide(int i, CardSide side) {
     if (cards.empty()) {
         cout << "Hand is empty!\n";
     } else if (i < 0 || i >= (int)cards.size()) {
         cout << "Index is out of range!\n";
     } else {
-        cards[i]->setState(state);
+        cards[i]->setCardSide(side);
     }
 }
 

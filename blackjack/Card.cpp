@@ -1,39 +1,44 @@
 #include "Card.h"
 
-Card::Card(Suit s, Rank r, int x, int y)
-    : Fl_Widget{x, y, cardWidth, cardHeight}, s{s}, r{r} {
-    string fileName = "cards_png/" + toString() + ".png";
+Card::Card(Suit s, Rank r, int x, int y, CardSide side)
+    : Fl_Widget{x, y, cardWidth, cardHeight},
+      s{s},
+      r{r},
+      backSide{new Fl_PNG_Image{"cards_png/blue_back.png"}},
+      cardSide{side} {
+    string fileName{"cards_png/" + toString() + ".png"};
     card = new Fl_PNG_Image{fileName.c_str()};
     card->scale(cardWidth, cardHeight);
-    backSide.scale(cardWidth, cardHeight);
+    backSide->scale(cardWidth, cardHeight);
+    hide();
 }
 
-Card::~Card() { delete card; }
+Card::~Card() {
+    delete card;
+    delete backSide;
+}
 
 void Card::reset() {
-    drawable = false;
-    state = CardState::back;
+    cardSide = CardSide::none;
     hide();
 }
 
 void Card::draw() {
-    if (drawable) {
-        switch (state) {
-            case CardState::front:
-                card->draw(x(), y());
-                break;
-            case CardState::back:
-                backSide.draw(x(), y());
-                break;
-            default:
-                break;
-        }
+    switch (cardSide) {
+        case CardSide::front:
+            card->draw(x(), y());
+            break;
+        case CardSide::back:
+            backSide->draw(x(), y());
+            break;
+        default:
+            break;
     }
 }
 
-void Card::setDrawable(bool value) { drawable = value; }
+void Card::setCardSide(CardSide side) { cardSide = side; }
 
-void Card::setState(CardState state) { this->state = state; }
+CardSide Card::getCardSide() const { return cardSide; }
 
 Suit Card::getSuit() const { return s; }
 
