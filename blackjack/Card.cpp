@@ -63,3 +63,7 @@ bool Card::operator<(const Card& rhs) const {
         return r < rhs.r;
     }
 }
+
+bool Card::operator==(const Card& rhs) const {
+    return (r == rhs.r && s == rhs.s);
+}

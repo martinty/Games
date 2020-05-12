@@ -65,4 +65,5 @@ class Card : public Fl_Widget {
     string toString() const;
     friend ostream& operator<<(ostream& os, const Card& rhs);
     bool operator<(const Card& rhs) const;
+    bool operator==(const Card& rhs) const;
 };
