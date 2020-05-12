@@ -73,14 +73,12 @@ void Blackjack::init() {
                     bet = playerCash;
                     playerCash -= bet;
                     startRound();
-                    return;
                 } else {
                     int number = std::stoi(name);
                     if (number <= playerCash) {
                         bet = number;
                         playerCash -= bet;
                         startRound();
-                        return;
                     }
                 }
             }
