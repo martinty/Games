@@ -4,35 +4,40 @@
 
 #include <iostream>
 
-SnakeAI::SnakeAI() : Fl_Widget{0, 0, screenWidth, screenHeight}, routeIndex{0} {
+SnakeAI::SnakeAI() : Fl_Widget{0, 0, screenWidth, screenHeight}, routeIndex{1} {
+    // Pos start{0, h() - snakeSize};
+    // body.push_back(start);
+
+    Hamiltonian pathGenerator;
+    route = pathGenerator.getPath();
+
+    body.push_back(route.front());
     newFood();
-    Pos start;
-    for (;;) {
-        start.x = (rand() % (screenWidth / snakeSize)) * snakeSize;
-        start.y = (rand() % (screenHeight / snakeSize)) * snakeSize;
-        if (start != food) break;
-    }
-    body.push_back(start);
-    makeHamiltonianPath(start);
+
+    // makeHamiltonianPath(start);
 }
 
 void SnakeAI::makeHamiltonianPath(Pos start) {
     route.push_back(start);
-    for (const auto& d : directions) {
-        Pos p = start - d;
-        if (p.x >= 0 && p.x < w() && p.y >= 0 && p.y < h()) {
-            end = p;
-            break;
-        }
+    end = Pos{w() - snakeSize, h() - snakeSize};
+    if (!recHamCycle()) {
+        std::cout << "Counter: " << counter << "\n";
+        std::cout << "No solution!\n";
+        std::cin.get();
+        std::exit(1);
     }
-    recHamCycle();
+    std::cout << "Counter: " << counter << "\n";
     return;
 }
 
 bool SnakeAI::recHamCycle() {
     if (route.size() < N) {
-        for (const auto& d : directions) {
-            Pos newPos = route.back() + d;
+        int i = rand() % (int)directions.size();
+        for (int d{0}; d < (int)directions.size(); d++) {
+            Pos newPos = route.back() + directions[i];
+            i++;
+            if (i == 4) i = 0;
+            counter++;
             if (newPos == end && route.size() < N - 1) {
                 continue;
             } else if (newPos.x < 0 || newPos.x >= w() || newPos.y < 0 ||
