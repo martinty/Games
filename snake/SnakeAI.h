@@ -14,6 +14,8 @@ class SnakeAI : public Fl_Widget {
     bool recHamCycle();
     void newFood();
     void update();
+    void simpleDraw();
+    void advancedDraw();
     void draw() override;
 
     Pos food;

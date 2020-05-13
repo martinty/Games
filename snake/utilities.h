@@ -16,12 +16,12 @@ struct Pos {
     }
 };
 
-constexpr int sX = 5;
-constexpr int sY = 5;
-constexpr int bX = 8;
+constexpr int sX = 3;  // Need to be odd
+constexpr int sY = 5;  // Need to be odd
+constexpr int bX = 6;
 constexpr int bY = 4;
-constexpr int sN = sX * sY;
-constexpr int bN = bX * bY;
+constexpr int sN = sX * sY;  // Max 40
+constexpr int bN = bX * bY;  // Need to be even, max 40
 
 constexpr int snakeSize = 20;
 constexpr int screenWidth = sX * bX * snakeSize;   // 960;

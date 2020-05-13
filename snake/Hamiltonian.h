@@ -12,7 +12,7 @@ class Hamiltonian {
     const Pos bEnd{0, 1};
     std::vector<Pos> sGrid;
     std::vector<Pos> bGrid{bStart};
-    std::vector<Pos> tGrid;
+    std::vector<Pos> path;
     const std::vector<Pos> dir{Pos{1, 0}, Pos{0, 1}, Pos{-1, 0}, Pos{0, -1}};
     const int dirSize = 4;
 
@@ -90,12 +90,6 @@ class Hamiltonian {
         return false;
     }
 
-    void convertSize() {
-        for (auto& pos : tGrid) {
-            pos *= snakeSize;
-        }
-    }
-
     void sInit(const Pos& inDir, const Pos& outDir) {
         if (inDir.x > 0 || inDir.y > 0) {
             sStart = Pos{0, 0};
@@ -114,7 +108,7 @@ class Hamiltonian {
         const int x = bGrid[i].x * sX;
         const int y = bGrid[i].y * sY;
         for (const auto& p : sGrid) {
-            tGrid.push_back(Pos{p.x + x, p.y + y});
+            path.push_back(Pos{p.x + x, p.y + y});
         }
         sGrid.clear();
     }
@@ -160,9 +154,27 @@ class Hamiltonian {
             std::exit(1);
         }
         buildTotalGrid(bN - 1);
-
-        convertSize();
     }
     ~Hamiltonian() = default;
-    std::vector<Pos> getPath() const { return tGrid; }
+
+    std::vector<Pos> getPath() const { return path; }
+
+    bool validPath() const {
+        Pos zero{0, 0};
+        Pos d = path.front() - path.back();
+        if (d.x * d.x + d.y * d.y > 1) return false;
+        if (d == zero) return false;
+        for (int i{0}; i < (int)path.size() - 1; i++) {
+            d = path[i] - path[i + 1];
+            if (d.x * d.x + d.y * d.y > 1) return false;
+            if (d == zero) return false;
+        }
+        return true;
+    }
+
+    void convertSize(int size) {
+        for (auto& pos : path) {
+            pos *= size;
+        }
+    }
 };

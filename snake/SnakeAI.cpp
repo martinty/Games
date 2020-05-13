@@ -4,6 +4,12 @@
 
 SnakeAI::SnakeAI() : Fl_Widget{0, 0, screenWidth, screenHeight}, pathIndex{1} {
     Hamiltonian pathGenerator;
+    if (!pathGenerator.validPath()) {
+        std::cout << "Invalid path! Exit ...\n";
+        std::cin.get();
+        std::exit(1);
+    }
+    pathGenerator.convertSize(snakeSize);
     path = pathGenerator.getPath();
     body.push_back(path.front());
     newFood();
@@ -34,8 +40,7 @@ void SnakeAI::update() {
     }
 }
 
-void SnakeAI::draw() {
-    update();
+void SnakeAI::simpleDraw() {
     for (auto it = body.cbegin() + 1; it != body.cend(); it++) {
         draw_box(Fl_Boxtype::FL_BORDER_BOX, it->x, it->y, snakeSize, snakeSize,
                  FL_GREEN);
@@ -44,4 +49,23 @@ void SnakeAI::draw() {
              snakeSize, snakeSize, FL_BLUE);
     draw_box(Fl_Boxtype::FL_BORDER_BOX, food.x, food.y, snakeSize, snakeSize,
              FL_RED);
+}
+
+void SnakeAI::advancedDraw() {
+    fl_color(FL_GREEN);
+    fl_line_style(0, snakeSize / 2);
+    for (int i{0}; i < (int)body.size() - 1; i++) {
+        fl_line(body[i].x + snakeSize / 2, body[i].y + snakeSize / 2,
+                body[i + 1].x + snakeSize / 2, body[i + 1].y + snakeSize / 2);
+    }
+    draw_box(Fl_Boxtype::FL_BORDER_BOX, body.front().x, body.front().y,
+             snakeSize, snakeSize, FL_BLUE);
+    draw_box(Fl_Boxtype::FL_BORDER_BOX, food.x, food.y, snakeSize, snakeSize,
+             FL_RED);
+}
+
+void SnakeAI::draw() {
+    update();
+    // simpleDraw();
+    advancedDraw();
 }
