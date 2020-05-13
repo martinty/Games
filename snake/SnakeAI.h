@@ -18,15 +18,8 @@ class SnakeAI : public Fl_Widget {
 
     Pos food;
     std::deque<Pos> body;
-    std::vector<Pos> route;
-    int routeIndex;
-
-    static constexpr int N = screenWidth / snakeSize * screenHeight / snakeSize;
-    Pos end;
-    std::vector<Pos> directions{Pos{snakeSize, 0}, Pos{-snakeSize, 0},
-                                Pos{0, snakeSize}, Pos{0, -snakeSize}};
-
-    double counter = 0;
+    std::vector<Pos> path;
+    int pathIndex;
 
    public:
     SnakeAI();

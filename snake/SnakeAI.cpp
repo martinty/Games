@@ -2,68 +2,11 @@
 
 #include <FL/fl_draw.H>
 
-#include <iostream>
-
-SnakeAI::SnakeAI() : Fl_Widget{0, 0, screenWidth, screenHeight}, routeIndex{1} {
-    // Pos start{0, h() - snakeSize};
-    // body.push_back(start);
-
+SnakeAI::SnakeAI() : Fl_Widget{0, 0, screenWidth, screenHeight}, pathIndex{1} {
     Hamiltonian pathGenerator;
-    route = pathGenerator.getPath();
-
-    body.push_back(route.front());
+    path = pathGenerator.getPath();
+    body.push_back(path.front());
     newFood();
-
-    // makeHamiltonianPath(start);
-}
-
-void SnakeAI::makeHamiltonianPath(Pos start) {
-    route.push_back(start);
-    end = Pos{w() - snakeSize, h() - snakeSize};
-    if (!recHamCycle()) {
-        std::cout << "Counter: " << counter << "\n";
-        std::cout << "No solution!\n";
-        std::cin.get();
-        std::exit(1);
-    }
-    std::cout << "Counter: " << counter << "\n";
-    return;
-}
-
-bool SnakeAI::recHamCycle() {
-    if (route.size() < N) {
-        int i = rand() % (int)directions.size();
-        for (int d{0}; d < (int)directions.size(); d++) {
-            Pos newPos = route.back() + directions[i];
-            i++;
-            if (i == 4) i = 0;
-            counter++;
-            if (newPos == end && route.size() < N - 1) {
-                continue;
-            } else if (newPos.x < 0 || newPos.x >= w() || newPos.y < 0 ||
-                       newPos.y >= h()) {
-                continue;
-            }
-            bool good = true;
-            for (const auto& p : route) {
-                if (p == newPos) {
-                    good = false;
-                    break;
-                }
-            }
-            if (good) {
-                route.push_back(newPos);
-                if (!recHamCycle()) {
-                    route.pop_back();
-                } else {
-                    return true;
-                }
-            }
-        }
-    } else {
-        return true;
-    }
-    return false;
 }
 
 void SnakeAI::newFood() {
@@ -82,8 +25,8 @@ void SnakeAI::newFood() {
 }
 
 void SnakeAI::update() {
-    body.push_front(route[routeIndex++]);
-    if (routeIndex == (int)route.size()) routeIndex = 0;
+    body.push_front(path[pathIndex++]);
+    if (pathIndex == (int)path.size()) pathIndex = 0;
     if (body.front() == food) {
         newFood();
     } else {

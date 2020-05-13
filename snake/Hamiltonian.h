@@ -122,7 +122,7 @@ class Hamiltonian {
    public:
     Hamiltonian() {
         if (!bRecursive()) {
-            std::cout << "No solution for big grid!\n";
+            std::cout << "No solution for big grid! Exit...\n";
             std::exit(1);
         }
 
@@ -131,7 +131,7 @@ class Hamiltonian {
         sInit(inDir, outDir);
         sGrid.push_back(sStart);
         if (!sRecursive()) {
-            std::cout << 0 << ": No solution for small grid!\n";
+            std::cout << 0 << ": No solution for small grid! Exit...\n";
             std::cin.get();
             std::exit(1);
         }
@@ -143,7 +143,7 @@ class Hamiltonian {
             sInit(inDir, outDir);
             sGrid.push_back(sStart);
             if (!sRecursive()) {
-                std::cout << i << ": No solution for small grid!\n";
+                std::cout << i << ": No solution for small grid! Exit...\n";
                 std::cin.get();
                 std::exit(1);
             }
