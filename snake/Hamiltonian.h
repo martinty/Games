@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <string>
 #include <vector>
 
 #include "utilities.h"
@@ -113,52 +114,6 @@ class Hamiltonian {
         sGrid.clear();
     }
 
-   public:
-    Hamiltonian() {
-        if (!bRecursive()) {
-            std::cout << "No solution for big grid! Exit...\n";
-            std::exit(1);
-        }
-
-        Pos inDir = bStart - bEnd;
-        Pos outDir = bGrid[1] - bStart;
-        sInit(inDir, outDir);
-        sGrid.push_back(sStart);
-        if (!sRecursive()) {
-            std::cout << 0 << ": No solution for small grid! Exit...\n";
-            std::cin.get();
-            std::exit(1);
-        }
-        buildTotalGrid(0);
-
-        for (int i{1}; i < bN - 1; i++) {
-            inDir = bGrid[i] - bGrid[i - 1];
-            outDir = bGrid[i + 1] - bGrid[i];
-            sInit(inDir, outDir);
-            sGrid.push_back(sStart);
-            if (!sRecursive()) {
-                std::cout << i << ": No solution for small grid! Exit...\n";
-                std::cin.get();
-                std::exit(1);
-            }
-            buildTotalGrid(i);
-        }
-
-        inDir = bEnd - bGrid[bN - 2];
-        outDir = bStart - bEnd;
-        sInit(inDir, outDir);
-        sGrid.push_back(sStart);
-        if (!sRecursive()) {
-            std::cout << bN - 1 << ": No solution for small grid!\n";
-            std::cin.get();
-            std::exit(1);
-        }
-        buildTotalGrid(bN - 1);
-    }
-    ~Hamiltonian() = default;
-
-    std::vector<Pos> getPath() const { return path; }
-
     bool validPath() const {
         Pos zero{0, 0};
         Pos d = path.front() - path.back();
@@ -171,6 +126,51 @@ class Hamiltonian {
         }
         return true;
     }
+
+   public:
+    Hamiltonian() {
+        if (!bRecursive()) {
+            throw std::runtime_error("No solution for big grid!");
+        }
+
+        Pos inDir = bStart - bEnd;
+        Pos outDir = bGrid[1] - bStart;
+        sInit(inDir, outDir);
+        sGrid.push_back(sStart);
+        if (!sRecursive()) {
+            throw std::runtime_error("No solution for small grid(0)!");
+        }
+        buildTotalGrid(0);
+
+        for (int i{1}; i < bN - 1; i++) {
+            inDir = bGrid[i] - bGrid[i - 1];
+            outDir = bGrid[i + 1] - bGrid[i];
+            sInit(inDir, outDir);
+            sGrid.push_back(sStart);
+            if (!sRecursive()) {
+                throw std::runtime_error("No solution for small grid(" +
+                                         std::to_string(i) + ")!");
+            }
+            buildTotalGrid(i);
+        }
+
+        inDir = bEnd - bGrid[bN - 2];
+        outDir = bStart - bEnd;
+        sInit(inDir, outDir);
+        sGrid.push_back(sStart);
+        if (!sRecursive()) {
+            throw std::runtime_error("No solution for small grid(" +
+                                     std::to_string(bN - 1) + ")!");
+        }
+        buildTotalGrid(bN - 1);
+
+        if (!validPath()) {
+            throw std::runtime_error("Path is not valid!");
+        }
+    }
+    ~Hamiltonian() = default;
+
+    std::vector<Pos> getPath() const { return path; }
 
     void convertSize(int size) {
         for (auto& pos : path) {

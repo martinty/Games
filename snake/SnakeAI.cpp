@@ -3,16 +3,17 @@
 #include <FL/fl_draw.H>
 
 SnakeAI::SnakeAI() : Fl_Widget{0, 0, screenWidth, screenHeight}, pathIndex{1} {
-    Hamiltonian pathGenerator;
-    if (!pathGenerator.validPath()) {
-        std::cout << "Invalid path! Exit ...\n";
+    try {
+        Hamiltonian pathGenerator;
+        pathGenerator.convertSize(snakeSize);
+        path = pathGenerator.getPath();
+        body.push_back(path.front());
+        newFood();
+    } catch (const std::exception& e) {
+        std::cerr << "Exception: " << e.what() << " Exit ...\n";
         std::cin.get();
         std::exit(1);
     }
-    pathGenerator.convertSize(snakeSize);
-    path = pathGenerator.getPath();
-    body.push_back(path.front());
-    newFood();
 }
 
 void SnakeAI::newFood() {
