@@ -13,42 +13,42 @@ void Snake::draw() {
             frames = 0;
         }
     }
-
-    bool first = true;
-    for (const auto& b : body) {
-        fl_color(FL_GREEN);
-        if (first) {
-            int a1, a2;
-            switch (dir) {
-                case Direction::left:
-                    a1 = -180 + 45;
-                    a2 = 180 - 45;
-                    break;
-                case Direction::right:
-                    a1 = 0 + 45;
-                    a2 = 360 - 45;
-                    break;
-                case Direction::down:
-                    a1 = -90 + 45;
-                    a2 = 270 - 45;
-                    break;
-                case Direction::up:
-                    a1 = -270 + 45;
-                    a2 = 90 - 45;
-                    break;
-                default:
-                    break;
-            }
-            fl_pie(b.x * snakeSize, b.y * snakeSize, snakeSize, snakeSize, a1,
-                   a2);
-            first = false;
-        } else {
-            fl_begin_polygon();
-            fl_circle(b.x * snakeSize + snakeSize / 2,
-                      b.y * snakeSize + snakeSize / 2, snakeSize / 2);
-            fl_end_polygon();
+    fl_color(FL_GREEN);
+    fl_line_style(0, snakeSize / 2);
+    for (int i{0}; i < (int)body.size() - 1; i++) {
+        fl_line(body[i].x * snakeSize + snakeSize / 2,
+                body[i].y * snakeSize + snakeSize / 2,
+                body[i + 1].x * snakeSize + snakeSize / 2,
+                body[i + 1].y * snakeSize + snakeSize / 2);
+    }
+    int a1, a2;
+    switch (dir) {
+        case Direction::left: {
+            a1 = -180 + 45;
+            a2 = 180 - 45;
+            break;
+        }
+        case Direction::right: {
+            a1 = 0 + 45;
+            a2 = 360 - 45;
+            break;
+        }
+        case Direction::down: {
+            a1 = -90 + 45;
+            a2 = 270 - 45;
+            break;
+        }
+        case Direction::up: {
+            a1 = -270 + 45;
+            a2 = 90 - 45;
+            break;
+        }
+        default: {
+            break;
         }
     }
+    fl_pie(body.front().x * snakeSize, body.front().y * snakeSize, snakeSize,
+           snakeSize, a1, a2);
 }
 
 void Snake::update() {

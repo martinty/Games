@@ -24,8 +24,17 @@ constexpr int sN = sX * sY;  // Max 40
 constexpr int bN = bX * bY;  // Need to be even, max 40
 
 constexpr int snakeSize = 20;
+
+#define AI
+#ifdef AI
 constexpr int screenWidth = sX * bX * snakeSize;   // 960;
 constexpr int screenHeight = sY * bY * snakeSize;  // 540;
 constexpr int FPS = 1000;
+#else
+constexpr int screenWidth = 960;
+constexpr int screenHeight = 540;
+constexpr int FPS = 60;
+#endif
+
 constexpr Pos startPos{10, 10};
 constexpr int acc = 4;

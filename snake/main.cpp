@@ -16,8 +16,11 @@ int main() {
         std::make_unique<Fl_Double_Window>(screenWidth, screenHeight, "Snake");
     win->color(FL_BLACK);
 
-    // Track* track = new Track();
+#ifdef AI
     auto ai = std::make_unique<SnakeAI>();
+#else
+    auto track = std::make_unique<Track>();
+#endif
 
     win->end();
     win->show();
