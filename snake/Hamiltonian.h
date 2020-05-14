@@ -57,6 +57,7 @@ class Hamiltonian {
         }
         return false;
     }
+
     bool bRecursive() {
         if (bGrid.size() < bN) {
             int i = rand() % dirSize;
@@ -105,7 +106,7 @@ class Hamiltonian {
         }
     }
 
-    void buildTotalGrid(const int& i) {
+    void buildPath(const int& i) {
         const int x = bGrid[i].x * sX;
         const int y = bGrid[i].y * sY;
         for (const auto& p : sGrid) {
@@ -140,7 +141,7 @@ class Hamiltonian {
         if (!sRecursive()) {
             throw std::runtime_error("No solution for small grid(0)!");
         }
-        buildTotalGrid(0);
+        buildPath(0);
 
         for (int i{1}; i < bN - 1; i++) {
             inDir = bGrid[i] - bGrid[i - 1];
@@ -151,7 +152,7 @@ class Hamiltonian {
                 throw std::runtime_error("No solution for small grid(" +
                                          std::to_string(i) + ")!");
             }
-            buildTotalGrid(i);
+            buildPath(i);
         }
 
         inDir = bEnd - bGrid[bN - 2];
@@ -162,7 +163,7 @@ class Hamiltonian {
             throw std::runtime_error("No solution for small grid(" +
                                      std::to_string(bN - 1) + ")!");
         }
-        buildTotalGrid(bN - 1);
+        buildPath(bN - 1);
 
         if (!validPath()) {
             throw std::runtime_error("Path is not valid!");
