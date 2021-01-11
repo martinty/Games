@@ -3,6 +3,7 @@
 #include <FL/Fl.H>
 #include <FL/fl_ask.H>
 #include <FL/fl_draw.H>
+#include <math.h>
 
 #include <iomanip>
 #include <sstream>
@@ -18,26 +19,26 @@ Blackjack::Blackjack() : Fl_Widget{0, 0, screenWidth, screenHeight} {
                                  "Yes");
     noBtn =
         make_unique<Button>(screenWidth / 2 + 40, cardHeight * 5, 40, 20, "No");
-    actionBtns.push_back(move(make_unique<Button>(
-        w() / 2 - 170, (int)(cardHeight * 4.5), 100, 20, "Hit")));
-    actionBtns.push_back(move(make_unique<Button>(
-        w() / 2 - 50, (int)(cardHeight * 4.5), 100, 20, "Stand")));
-    actionBtns.push_back(move(make_unique<Button>(
-        w() / 2 + 70, (int)(cardHeight * 4.5), 100, 20, "Double down")));
+    actionBtns.push_back(make_unique<Button>(
+        w() / 2 - 170, (int)(cardHeight * 4.5), 100, 20, "Hit"));
+    actionBtns.push_back(make_unique<Button>(
+        w() / 2 - 50, (int)(cardHeight * 4.5), 100, 20, "Stand"));
+    actionBtns.push_back(make_unique<Button>(
+        w() / 2 + 70, (int)(cardHeight * 4.5), 100, 20, "Double down"));
     betInput =
         make_unique<Fl_Int_Input>(w() / 2 - 30, cardHeight * 3, 60, 20, "Bet");
-    betBtns.push_back(move(
-        make_unique<Button>(w() / 2 - 100, cardHeight * 3 + 40, 40, 20, "50")));
-    betBtns.push_back(move(
-        make_unique<Button>(w() / 2 - 20, cardHeight * 3 + 40, 40, 20, "100")));
-    betBtns.push_back(move(
-        make_unique<Button>(w() / 2 + 60, cardHeight * 3 + 40, 40, 20, "200")));
-    betBtns.push_back(move(make_unique<Button>(
-        w() / 2 - 100, cardHeight * 3 + 80, 40, 20, "500")));
-    betBtns.push_back(move(make_unique<Button>(
-        w() / 2 - 20, cardHeight * 3 + 80, 40, 20, "1000")));
-    betBtns.push_back(move(make_unique<Button>(
-        w() / 2 + 60, cardHeight * 3 + 80, 40, 20, "All in")));
+    betBtns.push_back(
+        make_unique<Button>(w() / 2 - 100, cardHeight * 3 + 40, 40, 20, "50"));
+    betBtns.push_back(
+        make_unique<Button>(w() / 2 - 20, cardHeight * 3 + 40, 40, 20, "100"));
+    betBtns.push_back(
+        make_unique<Button>(w() / 2 + 60, cardHeight * 3 + 40, 40, 20, "200"));
+    betBtns.push_back(
+        make_unique<Button>(w() / 2 - 100, cardHeight * 3 + 80, 40, 20, "500"));
+    betBtns.push_back(
+        make_unique<Button>(w() / 2 - 20, cardHeight * 3 + 80, 40, 20, "1000"));
+    betBtns.push_back(make_unique<Button>(w() / 2 + 60, cardHeight * 3 + 80, 40,
+                                          20, "All in"));
     clock = make_unique<Fl_Round_Clock>(screenWidth - 100, 20, 80, 80);
 
     deck.shuffle();
@@ -208,8 +209,8 @@ void Blackjack::updateGameInfo() {
         dealerPoints += 0.5;
         playerCash += bet;
     }
-    string dealerPct = to_string((int)std::round(dealerPoints / rounds * 100));
-    string playerPct = to_string((int)std::round(playerPoints / rounds * 100));
+    string dealerPct = to_string((int)round(dealerPoints / rounds * 100));
+    string playerPct = to_string((int)round(playerPoints / rounds * 100));
     ostringstream ssPlayer, ssDealer;
     ssDealer << fixed << setprecision(1) << dealerPoints;
     ssPlayer << fixed << setprecision(1) << playerPoints;
