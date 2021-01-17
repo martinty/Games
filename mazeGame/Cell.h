@@ -4,7 +4,7 @@
 
 constexpr int screenWidth = 960;
 constexpr int screenHeight = 540;
-constexpr int FPS = 10;
+constexpr int FPS = 20;
 constexpr int cellSize = 20;
 constexpr int XMAX = screenWidth / cellSize;
 constexpr int YMAX = screenHeight / cellSize;
