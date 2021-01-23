@@ -147,8 +147,16 @@ void Blackjack::showdown() {
     fl_draw("New round?", w() / 2 - 30, cardHeight * 5 - 20);
     if (yesBtn->click()) {
         if (playerCash <= 0) {
-            fl_message("You're out of cash... The game will now exit.");
-            std::exit(0);
+            int choise = fl_choice("You're out of cash!", "Exit",
+                                   "Buy more cash", "Restart");
+            if (choise == 0) {
+                endGame();
+            } else if (choise == 1) {
+                playerCash += playerStartCash;
+                playerDebt += playerStartCash;
+            } else if (choise == 2) {
+                restartGame();
+            }
         }
         dealer.reset();
         player.reset();
@@ -160,8 +168,7 @@ void Blackjack::showdown() {
         updateCashInfo();
         stage = Stage::init;
     } else if (noBtn->click()) {
-        fl_message("Thanks for playing Blackjack! The game will now exit.");
-        std::exit(0);
+        endGame();
     }
 }
 
@@ -223,7 +230,8 @@ void Blackjack::updateGameInfo() {
 void Blackjack::updateCashInfo() {
     string info = "Current bet: " + to_string(bet) + "\n\n" +
                   "Dealer's cash: " + to_string(dealerCash) + "\n" +
-                  "Player's cash: " + to_string(playerCash);
+                  "Player's cash: " + to_string(playerCash) + "\n\n" +
+                  "Player's debt: " + to_string(playerDebt);
     cashTextBuff->text(info.c_str());
 }
 
@@ -256,6 +264,21 @@ void Blackjack::hideBetBtns() {
     for (auto& b : betBtns) {
         b->hide();
     }
+}
+
+void Blackjack::endGame() {
+    fl_message("Thanks for playing Blackjack! The game will now exit.");
+    std::exit(0);
+}
+
+void Blackjack::restartGame() {
+    newDeck();
+    dealerPoints = 0;
+    playerPoints = 0;
+    rounds = 0;
+    dealerCash = dealerStartCash;
+    playerCash = playerStartCash;
+    playerDebt = playerStartCash;
 }
 
 void Blackjack::playGame() {

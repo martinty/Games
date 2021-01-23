@@ -21,8 +21,9 @@ class Blackjack : public Fl_Widget {
     double dealerPoints = 0;
     double playerPoints = 0;
     int rounds = 0;
-    int dealerCash = 10000;
-    int playerCash = 3000;
+    int dealerCash = dealerStartCash;
+    int playerCash = playerStartCash;
+    int playerDebt = playerStartCash;
     int bet = 0;
     Stage stage = Stage::init;
 
@@ -38,6 +39,8 @@ class Blackjack : public Fl_Widget {
     void hidePlayerBtns();
     void showBetBtns();
     void hideBetBtns();
+    void endGame();
+    void restartGame();
     void playGame();
     void draw() override;
 

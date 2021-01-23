@@ -6,3 +6,6 @@ constexpr int FPS = 30;
 
 constexpr int cardWidth = 57;
 constexpr int cardHeight = 89;
+
+constexpr int dealerStartCash = 10000;
+constexpr int playerStartCash = 3000;
