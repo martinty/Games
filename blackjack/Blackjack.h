@@ -39,7 +39,8 @@ class Blackjack : public Fl_Widget {
     void hidePlayerBtns();
     void showBetBtns();
     void hideBetBtns();
-    void endGame();
+    void endGame(
+        string msg = "Thanks for playing Blackjack! The game will now exit.");
     void restartGame();
     void playGame();
     void draw() override;

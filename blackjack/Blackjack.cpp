@@ -147,6 +147,9 @@ void Blackjack::showdown() {
     fl_draw("New round?", w() / 2 - 30, cardHeight * 5 - 20);
     if (yesBtn->click()) {
         if (playerCash <= 0) {
+#ifdef _WIN32
+            endGame("You're out of cash! The game will now exit.");
+#endif
             int choise = fl_choice("You're out of cash!", "Exit",
                                    "Buy more cash", "Restart");
             if (choise == 0) {
@@ -266,8 +269,8 @@ void Blackjack::hideBetBtns() {
     }
 }
 
-void Blackjack::endGame() {
-    fl_message("Thanks for playing Blackjack! The game will now exit.");
+void Blackjack::endGame(string msg) {
+    fl_message(msg.c_str());
     std::exit(0);
 }
 
