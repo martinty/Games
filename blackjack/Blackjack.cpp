@@ -270,7 +270,7 @@ void Blackjack::hideBetBtns() {
 }
 
 void Blackjack::endGame(string msg) {
-    fl_message(msg.c_str());
+    fl_message("%s", msg.c_str());
     std::exit(0);
 }
 
